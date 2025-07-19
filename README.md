@@ -13,7 +13,7 @@ Pick a subject, set the difficulty, and let AI craft a balanced set of questions
 
 1. **Clone & enter the repo**
    ```bash
-   git clone https://github.com/your-org/DPPify.git
+   git clone [https://github.com/your-org/DPPify.git](https://github.com/cyberytti/DPPify)
    cd DPPify
    ```
 
