@@ -79,4 +79,4 @@ Open an issue or send a pull request—contributions are welcome!
 
 ---
 
-Made with ❤️ by the DPPify team.
+Made with ❤️ by cyberytti.
