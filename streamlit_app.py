@@ -88,7 +88,7 @@ def description_page():
     # Centered launch button
     col1, col2, col3 = st.columns([2, 1, 2])
     with col2:
-        if st.button("🚀 Launch the App", use_container_width=True, type="primary"):
+        if st.button("🚀 continue", use_container_width=True, type="primary"):
             st.session_state.app_started = True
             st.rerun()
 
