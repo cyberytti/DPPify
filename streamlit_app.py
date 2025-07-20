@@ -3,131 +3,172 @@ import os
 import time
 from backend.main_agent import DPPify
 
-# Set page config
+
+# --- PAGE CONFIGURATION (MUST BE THE FIRST STREAMLIT COMMAND) ---
 st.set_page_config(
-    page_title="DPPify - Daily Practice Problems Generator",
+    page_title="DPPify - AI Problem Generator",
     page_icon="📚",
     layout="wide",
-    initial_sidebar_state="expanded"
+    initial_sidebar_state="collapsed"
 )
 
-# Custom CSS for better styling
-st.markdown("""
-<style>
-    /* Main title styling */
-    .main-title {
-        text-align: center;
-        color: #1f77b4;
-        font-size: 3rem;
-        font-weight: bold;
-        margin-bottom: 0.5rem;
-    }
-    
-    .subtitle {
-        text-align: center;
-        color: #666;
-        font-size: 1.2rem;
-        margin-bottom: 2rem;
-    }
-    
-    /* Sidebar styling */
-    .sidebar-header {
-        color: #1f77b4;
-        font-size: 1.5rem;
-        font-weight: bold;
-        margin-bottom: 1rem;
-    }
-    
-    /* Info boxes */
-    .info-box {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        padding: 1.5rem;
-        border-radius: 10px;
-        color: white;
-        margin: 1rem 0;
-    }
-    
-    .feature-box {
-        background: #f8f9fa;
-        border: 2px solid #e9ecef;
-        border-radius: 10px;
-        padding: 1rem;
-        margin: 0.5rem 0;
-        transition: transform 0.2s;
-    }
-    
-    .feature-box:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    }
-    
-    /* Button styling */
-    .stButton > button {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        border: none;
-        border-radius: 25px;
-        padding: 0.5rem 2rem;
-        font-weight: bold;
-        transition: all 0.3s;
-    }
-    
-    .stButton > button:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
-    }
-    
-    /* Form styling */
-    .stSelectbox > div > div {
-        border-radius: 10px;
-    }
-    
-    .stTextInput > div > div {
-        border-radius: 10px;
-    }
-    
-    .stNumberInput > div > div {
-        border-radius: 10px;
-    }
-    
-    /* Footer */
-    .footer {
-        position: fixed;
-        left: 0;
-        bottom: 0;
-        width: 100%;
-        background-color: #1f77b4;
-        color: white;
-        text-align: center;
-        padding: 10px 0;
-        font-size: 0.9rem;
-    }
-    
-    .github-link {
-        color: #ffd700;
-        text-decoration: none;
-        font-weight: bold;
-    }
-    
-    .github-link:hover {
-        color: #ffed4e;
-    }
-</style>
-""", unsafe_allow_html=True)
+# --- SESSION STATE INITIALIZATION ---
+# This is the core of the logic. We initialize a state variable.
+if 'app_started' not in st.session_state:
+    st.session_state.app_started = False
 
-def cleanup_file(file_path):
-    """Remove the generated file after download"""
-    try:
-        if os.path.exists(file_path):
-            os.remove(file_path)
-    except Exception as e:
-        st.error(f"Error cleaning up file: {e}")
+# --- FUNCTION FOR THE DESCRIPTION PAGE ---
+def description_page():
+    """
+    Displays the initial dark-themed welcome page.
+    """
+    # Custom CSS for the dark welcome page
+    st.markdown("""
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap');
 
-def main():
+        .welcome-container {
+            background: linear-gradient(135deg, #1e1e1e 0%, #121212 100%);
+            color: #E0E0E0;
+            padding: 4rem 2rem;
+            border-radius: 15px;
+            text-align: center;
+            font-family: 'Roboto', sans-serif;
+            border: 1px solid #333;
+        }
+        .welcome-title {
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: #FFFFFF;
+            margin-bottom: 1rem;
+        }
+        .welcome-subtitle {
+            font-size: 1.5rem;
+            color: #a0a0a0;
+            margin-bottom: 2.5rem;
+            font-weight: 300;
+        }
+        .welcome-text {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            max-width: 800px;
+            margin: 0 auto 2.5rem auto;
+            text-align: left;
+        }
+        .launch-button-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    </style>
+    """, unsafe_allow_html=True)
+
+    # Page content
+    st.markdown(
+        """
+        <div class="welcome-container">
+            <div class="welcome-title">📚 Welcome to DPPify</div>
+            <div class="welcome-subtitle">Your Personal AI-Powered Daily Practice Problem Generator</div>
+            <div class="welcome-text">
+                <p>DPPify is designed to help students and learners generate custom practice problem sets on any topic, instantly. Whether you're preparing for an exam or just want to sharpen your skills, DPPify has you covered.</p>
+                <b>Key Features:</b>
+                <ul>
+                    <li><b>Any Topic:</b> From "Quantum Physics" to "Python List Comprehensions".</li>
+                    <li><b>Custom Difficulty:</b> Choose from Easy, Medium, Hard, or Very Hard levels.</li>
+                    <li><b>Instant PDF:</b> Get a beautifully formatted PDF, ready for printing or digital use.</li>
+                    <li><b>Powered by AI:</b> Leverages advanced language models to create relevant and challenging questions.</li>
+                </ul>
+                <p style="text-align:center; margin-top: 2rem;"><b>Ready to get started? Click the button below!</b></p>
+            </div>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+    
+    # Centered launch button
+    col1, col2, col3 = st.columns([2, 1, 2])
+    with col2:
+        if st.button("🚀 Launch the App", use_container_width=True, type="primary"):
+            st.session_state.app_started = True
+            st.rerun()
+
+
+# --- FUNCTION FOR THE MAIN APPLICATION (YOUR CODE) ---
+def main_application():
+    """
+    This function contains the entire code for your main DPPify app.
+    """
+    # Custom CSS for better styling (from your original code)
+    st.markdown("""
+    <style>
+        /* Main title styling */
+        .main-title {
+            text-align: center;
+            color: #1f77b4;
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+        .subtitle {
+            text-align: center;
+            color: #666;
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+        }
+        /* Sidebar styling */
+        .sidebar-header {
+            color: #1f77b4;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+        /* Info boxes */
+        .info-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 1.5rem;
+            border-radius: 10px;
+            color: white;
+            margin: 1rem 0;
+        }
+        /* Button styling */
+        .stButton > button {
+            border-radius: 25px;
+            padding: 0.5rem 2rem;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        /* Footer */
+        .footer {
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            background-color: #f1f1f1;
+            color: #333;
+            text-align: center;
+            padding: 10px 0;
+            font-size: 0.9rem;
+        }
+        .github-link {
+            color: #1f77b4;
+            text-decoration: none;
+            font-weight: bold;
+        }
+    </style>
+    """, unsafe_allow_html=True)
+
+    def cleanup_file(file_path):
+        """Remove the generated file after download"""
+        try:
+            if os.path.exists(file_path):
+                os.remove(file_path)
+        except Exception as e:
+            st.error(f"Error cleaning up file: {e}")
+
     # Header section
     st.markdown('<h1 class="main-title">📚 DPPify</h1>', unsafe_allow_html=True)
     st.markdown('<p class="subtitle">AI-Powered Daily Practice Problems Generator</p>', unsafe_allow_html=True)
-    
+
     # Project info and GitHub link
     col1, col2, col3 = st.columns([1, 2, 1])
     with col2:
@@ -143,28 +184,17 @@ def main():
             </center>
         </div>
         """, unsafe_allow_html=True)
-    
+
     # Sidebar configuration
     with st.sidebar:
         st.markdown('<div class="sidebar-header">⚙️ Configuration</div>', unsafe_allow_html=True)
-        
-        # API Key input
-        api_key = st.text_input(
-            "🔑 Enter your Cerebras API key:", 
-            type="password",
-            help="Get your API key from Cerebras Cloud Platform"
-        )
-        
+        api_key = st.text_input("🔑 Enter your Cerebras API key:", type="password", help="Get your API key from Cerebras Cloud Platform")
         st.markdown("---")
-        
-        # Instructions section
         st.markdown('<div class="sidebar-header">📋 How to Use</div>', unsafe_allow_html=True)
-        
         st.markdown("""
         <div style="background: #f8f9fa; padding: 1rem; border-radius: 10px; margin: 1rem 0;">
             <h4 style="color: #495057; margin-top: 0;">Step-by-Step Guide:</h4>
             <ol style="color: #6c757d; line-height: 1.6;">
-                <li><b>Get API Key:</b> Sign up at Cerebras Cloud Platform</li>
                 <li><b>Enter API Key:</b> Paste it in the field above</li>
                 <li><b>Choose Topic:</b> Enter any subject (Math, Physics, etc.)</li>
                 <li><b>Configure:</b> Set questions count & difficulty</li>
@@ -174,154 +204,59 @@ def main():
         </div>
         """, unsafe_allow_html=True)
         
-        # Features section
-        st.markdown("### 🚀 Features")
-        features = [
-            "🎯 Custom topic selection",
-            "📊 Multiple difficulty levels", 
-            "📝 Various question types",
-            "🎨 Beautiful PDF formatting",
-            "⚡ Instant generation",
-        ]
-        
-        for feature in features:
-            st.markdown(f"• {feature}")
-        
+        # Button to go back to the welcome page
         st.markdown("---")
-        
-        # Tips section
-        st.markdown("### 💡 Pro Tips")
-        st.markdown("""
-        - **Be Specific**: "Linear Equations" vs "Math"
-        - **Start Small**: Try 5-10 questions first
-        - **Mix Levels**: Combine Easy & Medium
-        - **Save Time**: Bookmark this page!
-        """)
-    
+        if st.button("⬅️ Go Back to Welcome Page"):
+            st.session_state.app_started = False
+            st.rerun()
+
     # Main content area
     st.markdown("## 🎓 Create Your Practice Problems")
-    
-    # Input form with better layout
     with st.form("pdf_form", clear_on_submit=False):
         col1, col2 = st.columns([2, 1])
-        
         with col1:
-            topic = st.text_input(
-                "📚 Topic Name:", 
-                placeholder="e.g., Linear Algebra, Organic Chemistry, Python Programming",
-                help="Be as specific as possible for better results"
-            )
-        
+            topic = st.text_input("📚 Topic Name:", placeholder="e.g., Linear Algebra, Organic Chemistry", help="Be as specific as possible for better results")
         with col2:
-            total_questions = st.number_input(
-                "📊 Total Questions", 
-                min_value=1, 
-                max_value=50, 
-                value=10,
-                step=1,
-                help="Recommended: 5-15 for daily practice"
-            )
-        
+            total_questions = st.number_input("📊 Total Questions", min_value=1, max_value=50, value=10, step=1, help="Recommended: 5-15 for daily practice")
         col3, col4 = st.columns(2)
-        
         with col3:
-            difficulty = st.selectbox(
-                "🎯 Difficulty Level", 
-                ["Easy", "Medium", "Hard", "Very Hard"],
-                index=1,
-                help="Choose based on your current skill level"
-            )
+            difficulty = st.selectbox("🎯 Difficulty Level", ["Easy", "Medium", "Hard", "Very Hard"], index=1, help="Choose based on your current skill level")
         
-        
-        # Generate button with custom styling
         st.markdown("<br>", unsafe_allow_html=True)
-        generate_button = st.form_submit_button(
-            "✨ Generate My DPP PDF ✨",
-            use_container_width=True
-        )
-    
-    # Processing and results
+        generate_button = st.form_submit_button("✨ Generate My DPP PDF ✨", use_container_width=True, type="primary")
+
     if generate_button:
-        # Validation
         if not api_key:
             st.error("🔑 Please enter your Cerebras API key in the sidebar")
-            st.info("💡 Don't have an API key? Get one from [Cerebras Cloud Platform](https://cloud.cerebras.ai)")
             return
-            
         if not topic.strip():
             st.error("📚 Please enter a topic name")
             return
         
-        # Processing with enhanced UI
-        progress_bar = st.progress(0)
-        status_text = st.empty()
-        
+        progress_bar = st.progress(0, text="🔄 Initializing DPP Generator...")
         try:
-            # Step 1: Initialize
-            status_text.text("🔄 Initializing DPP Generator...")
-            progress_bar.progress(20)
-            time.sleep(0.5)
+            progress_bar.progress(20, text="🤖 AI is crafting your questions...")
+            pdf_path = DPPify().run(topic_name=topic, total_q=total_questions, level=difficulty, api_key=api_key)
+            progress_bar.progress(90, text="📄 Creating beautiful PDF...")
+            time.sleep(1)
             
-            # Step 2: Generate content
-            status_text.text("🤖 AI is crafting your questions...")
-            progress_bar.progress(60)
-            
-            # Generate PDF
-            pdf_path = DPPify().run(
-                topic_name=topic,
-                total_q=total_questions,
-                level=difficulty,
-                api_key=api_key
-            )
-            
-            # Step 3: Creating PDF
-            status_text.text("📄 Creating beautiful PDF...")
-            progress_bar.progress(90)
-            time.sleep(0.5)
-            
-            # Step 4: Complete
-            status_text.text("✅ Your DPP is ready!")
-            progress_bar.progress(100)
-            
-            # Success message with download
+            progress_bar.progress(100, text="✅ Your DPP is ready!")
             st.success("🎉 Your Daily Practice Problems PDF has been generated successfully!")
             
-            # Download section
-            col1, col2, col3 = st.columns([1, 2, 1])
-            with col2:
-                with open(pdf_path, "rb") as f:
-                    pdf_bytes = f.read()
-                
+            with open(pdf_path, "rb") as f:
                 st.download_button(
                     label="📥 Download Your DPP PDF",
-                    data=pdf_bytes,
-                    file_name=f"DPP_{topic.replace(' ', '_')}_{difficulty}.pdf",
+                    data=f.read(),
+                    file_name=os.path.basename(pdf_path),
                     mime="application/pdf",
                     key="download_pdf",
                     use_container_width=True,
                     on_click=cleanup_file,
                     args=(pdf_path,)
                 )
-            
-            # Additional info
-            st.info(f"""
-            📋 **Your DPP Details:**
-            - **Topic:** {topic}
-            - **Questions:** {total_questions}
-            - **Difficulty:** {difficulty}  
-            - **File:** {os.path.basename(pdf_path)}
-            """)
-            
-            # Clear progress indicators
-            time.sleep(2)
-            progress_bar.empty()
-            status_text.empty()
-            
-        except FileNotFoundError:
-            st.error("❌ PDF file generation failed. Please try again.")
         except Exception as e:
             st.error(f"❌ An error occurred: {str(e)}")
-            st.info("💡 Try checking your API key or internet connection")
+            progress_bar.empty()
 
     # Footer
     st.markdown("<br><br><br>", unsafe_allow_html=True)
@@ -330,10 +265,14 @@ def main():
         Made with ❤️ by cyberytti | 
         <a href="https://github.com/cyberytti/DPPify" class="github-link" target="_blank">
             ⭐ Star us on GitHub
-        </a> | 
-        © 2025 DPPify
+        </a>
     </div>
     """, unsafe_allow_html=True)
 
-if __name__ == "__main__":
-    main()
+
+# --- MAIN ROUTER ---
+# This checks the state and decides which page to show.
+if st.session_state.app_started:
+    main_application()
+else:
+    description_page()
