@@ -2,7 +2,7 @@ import os
 from datetime import datetime
 from markdown_pdf import MarkdownPdf, Section
 
-def create_dpp_pdf(topic_name: str, questions: list, instrucions: str,output_dir: str = "dpp_pdfs",) -> str:
+def create_dpp_pdf(topic_name: str, questions: list,total_q:int , instrucions: str,output_dir: str = "dpp_pdfs",) -> str:
     """
     Creates a beautiful DPP (Daily Practice Problems) PDF document using markdown-pdf.
     
@@ -15,8 +15,8 @@ def create_dpp_pdf(topic_name: str, questions: list, instrucions: str,output_dir
         str: Path to the created PDF file
     """
 
-    if len(questions) > 50:
-        questions=questions[:50]
+   if len(questions) > total_q:
+        questions=questions[:total_q]
     
     # Create output directory if it doesn't exist
     os.makedirs(output_dir, exist_ok=True)
