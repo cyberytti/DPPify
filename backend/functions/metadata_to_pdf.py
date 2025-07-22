@@ -14,8 +14,8 @@ def create_dpp_pdf(topic_name: str, questions: list,total_q:int , instrucions: s
     Returns:
         str: Path to the created PDF file
     """
-
-   if len(questions) > total_q:
+    
+    if len(questions) > total_q:
         questions=questions[:total_q]
     
     # Create output directory if it doesn't exist
