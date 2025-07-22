@@ -10,7 +10,7 @@ Output Requirements:
   - Each question must follow this format:
 
     Example question:
-        What is the value of 5 × (4 + 3)?  a) 20  b) 25  c) 35  d) 45  
+        "  What is the value of 5 × (4 + 3)?  a)20  b)25  c)35  d)45  "
 
 
 - Instructions Field:
