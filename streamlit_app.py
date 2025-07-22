@@ -221,6 +221,8 @@ def main_application():
         col3, col4 = st.columns(2)
         with col3:
             difficulty = st.selectbox("🎯 Difficulty Level", ["Easy", "Medium", "Hard", "Very Hard"], index=1, help="Choose based on your current skill level")
+        with col4:
+            question_type = st.selectbox("🎯 Question Type", ["Only MCQ", "Only SAQ", "BOTH"], index=2, help="Choose the question type")
         
         st.markdown("<br>", unsafe_allow_html=True)
         generate_button = st.form_submit_button("✨ Generate My DPP PDF ✨", use_container_width=True, type="primary")
@@ -236,7 +238,13 @@ def main_application():
         progress_bar = st.progress(0, text="🔄 Initializing DPP Generator...")
         try:
             progress_bar.progress(20, text="🤖 AI is crafting your questions...")
-            pdf_path = DPPify().run(topic_name=topic, total_q=total_questions, level=difficulty, api_key=api_key)
+            pdf_path = DPPify().run(
+                topic_name=topic, 
+                total_q=total_questions, 
+                level=difficulty, 
+                api_key=api_key,
+                question_type=question_type 
+            )
             progress_bar.progress(90, text="📄 Creating beautiful PDF...")
             time.sleep(1)
             
