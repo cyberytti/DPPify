@@ -64,6 +64,7 @@ Difficulty level: {difficulty_level}"""
             topic_name=dpp["topic_name"],
             questions=dpp["questions"],
             instrucions=dpp["instruction"],
+            total_q=total_q,
         )
 
         return path
