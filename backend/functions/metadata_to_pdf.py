@@ -14,6 +14,9 @@ def create_dpp_pdf(topic_name: str, questions: list, instrucions: str,output_dir
     Returns:
         str: Path to the created PDF file
     """
+
+    if len(questions) > 50:
+        questions=questions[:50]
     
     # Create output directory if it doesn't exist
     os.makedirs(output_dir, exist_ok=True)
