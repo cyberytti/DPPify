@@ -223,7 +223,10 @@ def main_application():
             difficulty = st.selectbox("🎯 Difficulty Level", ["Easy", "Medium", "Hard", "Very Hard"], index=1, help="Choose based on your current skill level")
         with col4:
             question_type = st.selectbox("🎯 Question Type", ["Only MCQ", "Only SAQ", "BOTH"], index=2, help="Choose the question type")
-        
+        col5,col6 = st.columns(2)
+        with col5:
+            dpp_language = st.selectbox("Dpp language", ["English", "Bengali", "Hindi"], index=0, help="Choose the dpp language")
+
         st.markdown("<br>", unsafe_allow_html=True)
         generate_button = st.form_submit_button("✨ Generate My DPP PDF ✨", use_container_width=True, type="primary")
 
@@ -243,7 +246,8 @@ def main_application():
                 total_q=total_questions, 
                 level=difficulty, 
                 api_key=api_key,
-                question_type=question_type 
+                question_type=question_type,
+                dpp_language=dpp_language
             )
             progress_bar.progress(90, text="📄 Creating beautiful PDF...")
             time.sleep(1)
