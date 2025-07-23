@@ -59,7 +59,7 @@ class DPPify:
             logging.error(f"Prompt file not found at path: {prompt_path}")
             raise FileNotFoundError(f"Could not find the required prompt file: {prompt_path}")
 
-    def _generate_dpp_metadata(self, topic_name: str, total_questions: int, question_type: str, difficulty_level: str, api_key: str, language: str = "English") -> dict:
+    def _generate_dpp_metadata(self, topic_name: str, total_questions: int, question_type: str, difficulty_level: str, api_key: str, language: str) -> dict:
         """
         Generates DPP content using an AI model.
         
@@ -108,7 +108,7 @@ Difficulty level: {difficulty_level}"""
             "questions": questions_list
         }
 
-    def run(self, topic_name: str, question_type: str, total_q: int, level: str, api_key: str) -> str:
+    def run(self, topic_name: str, question_type: str, total_q: int, level: str, api_key: str,dpp_language: str = "English") -> str:
         """
         The main execution method to generate and save a DPP PDF.
         
@@ -129,7 +129,8 @@ Difficulty level: {difficulty_level}"""
                 question_type=question_type,
                 total_questions=total_q,
                 difficulty_level=level,
-                api_key=api_key
+                api_key=api_key,
+                language=dpp_language
             )
 
             # Step 2: Create the PDF from the generated content
@@ -151,3 +152,4 @@ Difficulty level: {difficulty_level}"""
             # Catch any other unexpected errors
             logging.error(f"An unexpected error occurred in the DPP generation process: {e}")
             raise RuntimeError(f"An unexpected error occurred: {e}")
+        
