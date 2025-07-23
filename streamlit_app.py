@@ -217,7 +217,7 @@ def main_application():
         with col1:
             topic = st.text_input("📚 Topic Name:", placeholder="e.g., Linear Algebra, Organic Chemistry", help="Be as specific as possible for better results")
         with col2:
-            total_questions = st.number_input("📊 Total Questions", min_value=1, max_value=50, value=10, step=1, help="Recommended: 5-15 for daily practice")
+            total_questions = st.number_input("📊 Total Questions", min_value=1, max_value=200, value=10, step=1, help="Recommended: 5-15 for daily practice")
         col3, col4 = st.columns(2)
         with col3:
             difficulty = st.selectbox("🎯 Difficulty Level", ["Easy", "Medium", "Hard", "Very Hard"], index=1, help="Choose based on your current skill level")
