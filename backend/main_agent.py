@@ -82,7 +82,7 @@ Total number of questions: {total_questions}
 Difficulty level: {difficulty_level}"""
         
         agent = Agent(
-            model=Cerebras(id="qwen-3-235b-a22b", api_key=api_key),
+            model=Cerebras(id="qwen-3-235b-a22b", api_key=api_key,max_completion_tokens=40000),
             system_message=system_prompt,
             response_model=DynamicDPP,
         )
