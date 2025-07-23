@@ -59,7 +59,7 @@ class DPPify:
             logging.error(f"Prompt file not found at path: {prompt_path}")
             raise FileNotFoundError(f"Could not find the required prompt file: {prompt_path}")
 
-    def _generate_dpp_metadata(self, topic_name: str, total_questions: int, question_type: str, difficulty_level: str, api_key: str, language: str) -> dict:
+    def _generate_dpp_metadata(self, topic_name: str, total_questions: int, question_type: str, difficulty_level: str, api_key: str, language: str,additional_instruction: str) -> dict:
         """
         Generates DPP content using an AI model.
         
@@ -79,7 +79,10 @@ class DPPify:
         user_prompt = f"""Topic name: {topic_name}
 Language: {language}
 Total number of questions: {total_questions}
-Difficulty level: {difficulty_level}"""
+Difficulty level: {difficulty_level}
+Additional instructions:{additional_instruction}
+
+Create the PDF by following the prompts,given data and the additional instructions."""
         
         agent = Agent(
             model=Cerebras(id="qwen-3-235b-a22b", api_key=api_key,max_completion_tokens=40000),
@@ -108,7 +111,7 @@ Difficulty level: {difficulty_level}"""
             "questions": questions_list
         }
 
-    def run(self, topic_name: str, question_type: str, total_q: int, level: str, api_key: str,dpp_language: str = "English") -> str:
+    def run(self, topic_name: str, question_type: str, total_q: int, level: str, api_key: str,dpp_language: str = "English",additional_instruction: str = "") -> str:
         """
         The main execution method to generate and save a DPP PDF.
         
@@ -130,7 +133,8 @@ Difficulty level: {difficulty_level}"""
                 total_questions=total_q,
                 difficulty_level=level,
                 api_key=api_key,
-                language=dpp_language
+                language=dpp_language,
+                additional_instruction=additional_instruction
             )
 
             # Step 2: Create the PDF from the generated content
@@ -152,4 +156,3 @@ Difficulty level: {difficulty_level}"""
             # Catch any other unexpected errors
             logging.error(f"An unexpected error occurred in the DPP generation process: {e}")
             raise RuntimeError(f"An unexpected error occurred: {e}")
-        
