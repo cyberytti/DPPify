@@ -137,7 +137,7 @@ Difficulty level: {difficulty_level}"""
             pdf_path = create_dpp_pdf(
                 topic_name=dpp_metadata["topic_name"],
                 questions=dpp_metadata["questions"],
-                instrucions=dpp_metadata["instruction"],
+                instructions=dpp_metadata["instruction"],
                 total_q=total_q,
             )
 
