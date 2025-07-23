@@ -217,15 +217,20 @@ def main_application():
         with col1:
             topic = st.text_input("📚 Topic Name:", placeholder="e.g., Linear Algebra, Organic Chemistry", help="Be as specific as possible for better results")
         with col2:
-            total_questions = st.number_input("📊 Total Questions", min_value=1, max_value=200, value=10, step=1, help="Recommended: 5-15 for daily practice")
+            total_questions = st.number_input("📊 Total Questions", min_value=1, max_value=100, value=10, step=1, help="Recommended: 5-15 for daily practice")
+        
         col3, col4 = st.columns(2)
         with col3:
             difficulty = st.selectbox("🎯 Difficulty Level", ["Easy", "Medium", "Hard", "Very Hard"], index=1, help="Choose based on your current skill level")
         with col4:
-            question_type = st.selectbox("🎯 Question Type", ["Only MCQ", "Only SAQ", "BOTH"], index=2, help="Choose the question type")
-        col5,col6 = st.columns(2)
+            question_type = st.selectbox("📝 Question Type", ["Only MCQ", "Only SAQ", "BOTH"], index=2, help="Choose the question type")
+        
+        col5, col6 = st.columns(2)
         with col5:
-            dpp_language = st.selectbox("Dpp language", ["English", "Bengali", "Hindi"], index=0, help="Choose the dpp language")
+            dpp_language = st.selectbox("🌐 DPP Language", ["🇬🇧 English", "🇮🇳 Hindi", "🇮🇳 Bengali"], index=0, help="Choose the DPP language")
+        
+        with col6:
+            additional_instruction = st.text_input("⚙️ Additional Instructions:", placeholder="e.g., Focus on formulas, Include diagrams...", help="Provide natural language instructions for DPP generation")
 
         st.markdown("<br>", unsafe_allow_html=True)
         generate_button = st.form_submit_button("✨ Generate My DPP PDF ✨", use_container_width=True, type="primary")
@@ -247,7 +252,8 @@ def main_application():
                 level=difficulty, 
                 api_key=api_key,
                 question_type=question_type,
-                dpp_language=dpp_language
+                dpp_language=dpp_language,
+                additional_instruction=additional_instruction
             )
             progress_bar.progress(90, text="📄 Creating beautiful PDF...")
             time.sleep(1)
