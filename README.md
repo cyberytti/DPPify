@@ -119,9 +119,8 @@ Contributions are welcome! Whether it's a bug fix, a new feature, or a UI improv
 
 **Possible ideas for contribution:**
 - Adding support for more output formats (e.g., `.docx`, `.txt`).
-- Creating more specialized prompt templates for different subjects.
 - Improving the visual styling of the generated PDFs.
-- Adding a feature to include answer keys.
+
 
 ---
 
