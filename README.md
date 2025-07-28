@@ -1,4 +1,9 @@
 <h1 align="center">🎓 DPPify</h1>
+
+<p align="center">
+  <b>Instantly create practice question sheets (DPPs) on any topic.</b>
+</p>
+
 <p align="center">
   <img src="https://img.shields.io/badge/Python-3.9%2B-blue?style=for-the-badge&logo=python" alt="Python Version">
   <img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" alt="License">
@@ -7,33 +12,32 @@
   </a>
 </p>
 
-<p align="center">
-  <b>Instantly generate beautiful Daily Practice Problem (DPP) PDFs on any topic with AI.</b>
-</p>
-
-<!-- Optional: Add a GIF of the app in action here -->
-<!-- <p align="center">
-  <img src="link_to_your_demo.gif" alt="DPPify Demo" width="800"/>
-</p> -->
+DPPify is a simple tool for students and teachers. Need to practice for a test or create a worksheet? Just tell DPPify the topic, and it will instantly generate a PDF with practice questions for you. It's like having a personal tutor who can create study materials on demand.
 
 ---
 
 ## ✨ Features
-DPPify is a lightweight but powerful tool designed for students, teachers, and lifelong learners.
 
-- ✨ **AI-Powered Content:** Leverages powerful LLMs to generate relevant, high-quality questions.
-- 📚 **Any Topic, Any Subject:** From "Quantum Physics" to "Shakespearean Sonnets."
-- 🎛️ **Total Customization:** Control the topic, difficulty (Easy, Medium, Hard), number of questions, and question types (MCQ, Short Answer, or a mix).
-- 🌐 **Multi-Language Support:** Generate DPPs in English, Hindi, Bengali, and more.
-- ✍️ **Natural Language Instructions:** Guide the AI with specific requests like "Focus on formulas" or "Include historical context."
-- 📄 **Instant PDF Generation:** Get a clean, well-formatted PDF ready for printing or digital sharing in seconds.
-- 🚀 **Simple & Fast UI:** Built with Streamlit for a seamless and intuitive user experience.
+- **Any Topic, Any Subject:** From "Quantum Physics" to "Shakespearean Sonnets."
+- **Total Control:** You choose the topic, difficulty (Easy, Medium, Hard), number of questions, and question types (Multiple Choice, Short Answer, or a mix).
+- **Speak Your Language:** Create question sheets in English, Hindi, Bengali, and more.
+- **Give Specific Instructions:** Tell the AI what to focus on, like "Include more questions about formulas" or "Add historical context."
+- **Instant PDF:** Get a clean, printable PDF in seconds, ready to use.
+- **Simple to Use:** A clean and friendly interface makes it easy for anyone.
 
 ---
 
-## 🚀 Quick Start
+## 📸 Examples
+Here's what your generated PDFs will look like:
 
-Follow these steps to get DPPify running on your local machine.
+| Bangali language output | Hindi language output | English language output |
+| :---: | :---: | :---: |
+| <img src="https://raw.githubusercontent.com/cyberytti/DPPify/efcd2ec9e86176ecd64c19dba9fdaa5dbe822c55/sample_output_images/Screenshot%20from%202025-07-29%2000-33-27.png" alt="Bengali DPP" width="250"> | <img src="https://raw.githubusercontent.com/cyberytti/DPPify/efcd2ec9e86176ecd64c19dba9fdaa5dbe822c55/sample_output_images/Screenshot%20from%202025-07-29%2000-32-51.png" alt="Hindi DPP" width="250"> | <img src="https://raw.githubusercontent.com/cyberytti/DPPify/efcd2ec9e86176ecd64c19dba9fdaa5dbe822c55/sample_output_images/Screenshot%20from%202025-07-29%2000-32-16.png" alt="English DPP" width="250"> |
+
+---
+
+## 🚀 How to Use
+Get DPPify running in just a few steps:
 
 1.  **Clone the Repository**
     ```bash
@@ -41,7 +45,7 @@ Follow these steps to get DPPify running on your local machine.
     cd DPPify
     ```
 
-2.  **Create and Activate a Virtual Environment**
+2.  **Set up the Environment**
     ```bash
     # For macOS/Linux
     python3 -m venv venv
@@ -60,72 +64,23 @@ Follow these steps to get DPPify running on your local machine.
 4.  **Get Your API Key**
     DPPify uses the Cerebras AI platform. Get your free API key from [cloud.cerebras.ai](https://cloud.cerebras.ai).
 
-5.  **Run the Streamlit App**
+5.  **Run the App**
     ```bash
     streamlit run streamlit_app.py
     ```
 
 6.  **Generate Your First DPP**
-    Open the app in your browser, paste your API key into the sidebar, fill in your desired topic and settings, and click **"Generate My DPP PDF"**.
-
----
-
-## ⚙️ How It Works
-DPPify follows a simple yet effective agentic workflow:
-
-1.  **Input:** The user provides the topic, difficulty, question type, and other parameters in the Streamlit UI.
-2.  **Prompting:** The `DPPify` agent selects a specialized system prompt tailored to the requested question type (MCQ, SAQ, or both).
-3.  **Generation:** `Agno` orchestrates a call to the Cerebras LLM, which generates the DPP content. `Pydantic` models ensure the AI's output is perfectly structured.
-4.  **Formatting:** The structured data (topic, instructions, questions) is converted into a clean Markdown string.
-5.  **PDF Creation:** The `markdown-pdf` library renders the final, polished PDF document, ready for download.
-
----
-
-## 📦 Project Structure
-The repository is organized to separate the front-end, back-end logic, and generated assets.
-
-```
-DPP_creator/
-├── backend/
-│   ├── functions/
-│   │   └── metadata_to_pdf.py   # Converts structured data to a PDF
-│   ├── prompts/
-│   │   ├── only_mcq_creator_system_prompt.txt
-│   │   ├── only_saq_creator_system_prompt.txt
-│   │   └── both_questions_creater_system_prompt.txt
-│   └── main_agent.py            # Core agent logic using Agno & Cerebras
-├── dpp_pdfs/                    # Auto-created directory for generated PDFs
-├── streamlit_app.py             # The Streamlit front-end
-├── requirements.txt
-└── README.md
-```
-
----
-
-## 🛠️ Tech Stack
-
-| Component         | Technology                               | Purpose                               |
-|-------------------|------------------------------------------|---------------------------------------|
-| **Web Framework** | **Streamlit**                            | Creating the interactive user interface. |
-| **Agent Framework**| **Agno**                                 | Orchestrating the AI agent's workflow. |
-| **LLM Backend**   | **Cerebras**                             | Generating the educational content.   |
-| **PDF Generation**| **markdown-pdf**                         | Converting Markdown to a PDF document.|
-| **Data Validation**| **Pydantic**                             | Enforcing a strict structure for AI outputs. |
+    Open the app in your browser, paste your API key, choose your topic and settings, and click the "Generate" button!
 
 ---
 
 ## 🤝 Contributing
-Contributions are welcome! Whether it's a bug fix, a new feature, or a UI improvement, feel free to open an issue or submit a pull request.
-
-**Possible ideas for contribution:**
-- Adding support for more output formats (e.g., `.docx`, `.txt`).
-- Improving the visual styling of the generated PDFs.
-
+Contributions are welcome! If you have an idea to make DPPify better, feel free to open an issue or submit a pull request.
 
 ---
 
 ## 📄 License
-This project is licensed under the MIT License. See the `LICENSE` file for details.
+This project is licensed under the MIT License.
 
 ---
 
